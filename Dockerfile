@@ -1,5 +1,6 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10-slim-bullseye
+#FROM python:3.10-slim-bullseye
+FROM swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/library/python:3.10-slim-bullseye
 
 # Set the working directory in the container
 WORKDIR /MoneyPrinterTurbo
@@ -8,6 +9,10 @@ WORKDIR /MoneyPrinterTurbo
 RUN chmod 777 /MoneyPrinterTurbo
 
 ENV PYTHONPATH="/MoneyPrinterTurbo"
+
+# 使用阿里云的 apt 源
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list && \
+    sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \

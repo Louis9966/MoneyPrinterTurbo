@@ -1,5 +1,4 @@
-x-common-volumes: &common-volumes
-  - ./:/MoneyPrinterTurbo
+version: '3.8'
 
 services:
   webui:
@@ -9,8 +8,9 @@ services:
     container_name: "webui"
     ports:
       - "8501:8501"
-    command: [ "streamlit", "run", "./webui/Main.py","--browser.serverAddress=127.0.0.1","--server.enableCORS=True","--browser.gatherUsageStats=False" ]
-    volumes: *common-volumes
+    command: [ "streamlit", "run", "./webui/Main.py", "--browser.serverAddress=127.0.0.1", "--server.enableCORS=True", "--browser.gatherUsageStats=False" ]
+    volumes:
+      - .:/MoneyPrinterTurbo
     restart: always
   api:
     build:
@@ -20,5 +20,32 @@ services:
     ports:
       - "8080:8080"
     command: [ "python3", "main.py" ]
-    volumes: *common-volumes
+    volumes:
+      - .:/MoneyPrinterTurbo
     restart: always
+
+
+#dockerx-common-volumes: &common-volumes
+#  - ./:/MoneyPrinterTurbo
+#
+#services:
+#  webui:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: "webui"
+#    ports:
+#      - "8501:8501"
+#    command: [ "streamlit", "run", "./webui/Main.py","--browser.serverAddress=127.0.0.1","--server.enableCORS=True","--browser.gatherUsageStats=False" ]
+#    volumes: *common-volumes
+#    restart: always
+#  api:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    container_name: "api"
+#    ports:
+#      - "8080:8080"
+#    command: [ "python3", "main.py" ]
+#    volumes: *common-volumes
+#    restart: always
